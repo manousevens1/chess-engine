@@ -3,7 +3,7 @@ Handling the AI moves.
 """
 import random
 
-piece_score = {"K": 0, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 1}
+piece_score = {"K": 100, "Q": 9, "R": 5, "B": 3, "N": 3, "p": 1}
 CHECKMATE = 1000
 STALEMATE = 0
 DEPTH = 3
@@ -134,8 +134,7 @@ def findMoveNegaMaxAlphaBeta(game_state, valid_moves, depth, alpha, beta, turn_m
     global next_move
     if depth == 0:
         return turn_multiplier * scoreBoard(game_state)
-    
-    #move ordering - implement later //TODO
+
     max_score = -CHECKMATE
     for move in valid_moves:
         game_state.makeMove(move)
@@ -172,7 +171,6 @@ def scoreBoard(game_state):
             elif square[0] == 'b':
                 score -= piece_score[square[1]]
     return score
-    
 
 #deprecated
 def scoreMaterial(board):

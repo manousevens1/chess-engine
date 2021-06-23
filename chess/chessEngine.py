@@ -8,8 +8,8 @@ class GameState():
     def __init__(self):
         '''
         Board is an 8x8 2d list, each element in list has 2 characters.
-        The first character represtents the color of the piece: 'b' or 'w'.
-        The second character represtents the type of the piece: 'R', 'N', 'B', 'Q', 'K' or 'p'.
+        The first character represents the color of the piece: 'b' or 'w'.
+        The second character represents the type of the piece: 'R', 'N', 'B', 'Q', 'K' or 'p'.
         "--" represents an empty space with no piece.
         '''
         self.board = [
@@ -356,10 +356,12 @@ class GameState():
             move_amount = -1
             start_row = 6
             enemy_color = "b"
+            kingRow, kingCol = self.white_king_location
         else:
             move_amount = 1
             start_row = 1
             enemy_color = "w"
+            kingRow, kingCol = self.black_king_location
         
         if self.board[row+move_amount][col] == "--": #1 square pawn advance
             if not piece_pinned or pin_direction == (move_amount, 0):
@@ -371,13 +373,14 @@ class GameState():
                 if self.board[row + move_amount][col - 1][0] == enemy_color:
                     moves.append(Move((row, col), (row + move_amount, col - 1), self.board))
                 if (row + move_amount, col - 1) == self.enpassant_possible:
-                    moves.append(Move((row, col), (row + move_amount, col - 1), self.board, is_enpassant_move = True))
+                    attackingPiece = blockingPiece = False
+                    moves.append(Move((row, col), (row + move_amount, col - 1), self.board, is_enpassant_move=True))
         if col + 1 <= 7: #capture to the right
             if not piece_pinned or pin_direction == (move_amount, +1):
                 if self.board[row + move_amount][col +1][0] == enemy_color:
                     moves.append(Move((row, col), (row + move_amount, col + 1), self.board))
                 if (row + move_amount, col + 1) == self.enpassant_possible:
-                    moves.append(Move((row, col), (row + move_amount, col + 1), self.board, is_enpassant_move = True))
+                    moves.append(Move((row, col), (row + move_amount, col + 1), self.board, is_enpassant_move=True))
                     
         
     def getRookMoves(self, row, col, moves):
